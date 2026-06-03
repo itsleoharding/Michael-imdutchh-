@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Website for Michael</title>
+  <meta name="description" content="A short walkthrough and the sample deliverables built for Stay Viral, ready to start right away." />
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Roboto Slab (400, 900) + JetBrains Mono (500, 700) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Roboto+Slab:wght@400;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            base: "#2E2E2E",
+            surface: "#272727",
+            card: "#333333",
+            sage: "#B1F7CC",
+            ink: "#F4F4F1",
+            muted: "#A6A6A6",
+          },
+          fontFamily: {
+            slab: ["'Roboto Slab'", "serif"],
+            mono: ["'JetBrains Mono'", "monospace"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    :root {
+      --base: #2e2e2e;
+      --surface: #272727;
+      --card: #333333;
+      --sage: #b1f7cc;
+      --ink: #f4f4f1;
+      --muted: #a6a6a6;
+      --hairline: rgba(255, 255, 255, 0.08);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--base);
+      color: var(--ink);
+      font-family: "Roboto Slab", serif;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      position: relative;
+      overflow-x: hidden;
+      /* Centered throughout */
+      text-align: center;
+    }
+
+    /* ============ ATMOSPHERE ============ */
+
+    /* Fixed grain overlay at ~0.10 opacity */
+    .grain-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Fixed faint sage grid overlay at ~0.04 opacity, 72px cell */
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(to right, var(--sage) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--sage) 1px, transparent 1px);
+      background-size: 72px 72px;
+    }
+
+    /* One soft sage radial glow at the very top, behind the hero, low opacity */
+    .hero-glow {
+      position: fixed;
+      top: -240px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1100px;
+      height: 700px;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(177, 247, 204, 0.12) 0%,
+        rgba(177, 247, 204, 0.05) 38%,
+        transparent 70%
+      );
+    }
+
+    /* Keep real content above the overlays */
+    .page {
+      position: relative;
+      z-index: 2;
+      /* Uniformly scale every element to 75% of its natural size so nothing  */
+      /* gets stretched or oddly indented on mobile. Applied to the content   */
+      /* wrapper only, so the fixed atmosphere overlays still cover the page.  */
+      zoom: 0.75;
+    }
+
+    /* ============ CONTAINER ============ */
+    .container-narrow {
+      max-width: 880px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    /* ============ TYPOGRAPHY HELPERS ============ */
+    .font-black {
+      font-family: "Roboto Slab", serif;
+      font-weight: 900;
+    }
+    .mono {
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .eyebrow {
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sage);
+      font-size: 0.88rem;
+    }
+
+    .heading {
+      font-family: "Roboto Slab", serif;
+      font-weight: 900;
+      line-height: 1.12;
+      color: var(--ink);
+    }
+
+    .heading em {
+      font-style: italic;
+    }
+
+    .body-copy {
+      font-family: "Roboto Slab", serif;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.75;
+      font-size: 1.075rem;
+    }
+
+    .body-copy p + p {
+      margin-top: 1.35rem;
+    }
+
+    /* ============ VIDEO FRAME ============ */
+    .video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+      overflow: hidden;
+      background-color: var(--card);
+      border: 2px solid rgba(177, 247, 204, 0.55);
+      box-shadow:
+        0 0 0 1px rgba(177, 247, 204, 0.08),
+        0 24px 70px -28px rgba(177, 247, 204, 0.35),
+        0 18px 50px -30px rgba(0, 0, 0, 0.8);
+    }
+
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 84px;
+      height: 84px;
+      border-radius: 9999px;
+      background-color: var(--sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 14px 40px -10px rgba(177, 247, 204, 0.55);
+      z-index: 2;
+    }
+
+    .play-button svg {
+      width: 34px;
+      height: 34px;
+      margin-left: 5px;
+      fill: #16241b;
+    }
+
+    .duration-badge {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      background-color: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--hairline);
+      padding: 4px 10px;
+      border-radius: 8px;
+      z-index: 2;
+    }
+
+    /* ============ SHOWCASE SLOT (16:10) ============ */
+    .showcase-slot {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-radius: 14px;
+      background-color: var(--card);
+      border: 1px solid rgba(177, 247, 204, 0.35);
+      box-shadow: 0 18px 50px -34px rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .showcase-slot .slot-note {
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 0.74rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ============ TEXT SLOT (placeholder copy area) ============ */
+    .text-slot {
+      border: 1px dashed rgba(177, 247, 204, 0.45);
+      border-radius: 14px;
+      background-color: var(--surface);
+      padding: 28px;
+      box-shadow: 0 18px 50px -38px rgba(0, 0, 0, 0.85);
+      text-align: center;
+    }
+
+    @media (min-width: 640px) {
+      .text-slot {
+        padding: 34px;
+      }
+    }
+
+    .text-slot .slot-tag {
+      display: block;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 16px;
+    }
+
+    .text-slot .placeholder {
+      font-family: "Roboto Slab", serif;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 1.04rem;
+    }
+
+    .text-slot .placeholder p + p {
+      margin-top: 1.2rem;
+    }
+
+    /* ============ CARDS / BLOCKS (section 4 slots) ============ */
+    /* Same dashed sage outline as the section 2/3 text slots. */
+    /* Uniform 28px internal rhythm: padding (top + bottom) equals the 28px */
+    /* margins between title, showcase, and button. */
+    .block-card {
+      background-color: var(--surface);
+      border: 1px dashed rgba(177, 247, 204, 0.45);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.9);
+      text-align: center;
+    }
+
+    /* ============ DELIVERABLES SLIDER (section 4) ============ */
+    /* Horizontal scroll-snap carousel. Cards bleed to the container edges via */
+    /* negative margins, and the next card peeks to signal it scrolls. */
+    .deliverables-slider {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding: 0 24px;
+      -webkit-overflow-scrolling: touch;
+      padding: 6px 24px 20px;
+      margin-left: -24px;
+      margin-right: -24px;
+      text-align: left;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(177, 247, 204, 0.4) transparent;
+    }
+
+    .deliverables-slider::-webkit-scrollbar {
+      height: 8px;
+    }
+    .deliverables-slider::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .deliverables-slider::-webkit-scrollbar-thumb {
+      background-color: rgba(177, 247, 204, 0.3);
+      border-radius: 9999px;
+    }
+
+    .deliverables-slider .block-card {
+      flex: 0 0 auto;
+      width: min(82vw, 340px);
+      scroll-snap-align: center;
+    }
+
+    /* Small swipe affordance under the slider. */
+    .slider-hint {
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ============ CALL TO ACTION BUTTON ============ */
+    /* Main label is the wider line; the subtext is sized a touch smaller so it
+       sits just inside the main label width. Normal word spacing throughout. */
+    .cta-button {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      width: fit-content;
+      max-width: 92vw;
+      background-color: var(--sage);
+      color: #16241b;
+      padding: 16px 30px;
+      border-radius: 14px;
+      text-decoration: none;
+      box-shadow: 0 18px 45px -18px rgba(177, 247, 204, 0.6);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 24px 55px -16px rgba(177, 247, 204, 0.7);
+    }
+
+    .cta-button:focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 4px;
+    }
+
+    .cta-main {
+      font-family: "Roboto Slab", serif;
+      font-weight: 900;
+      font-size: clamp(1.5rem, 6.5vw, 1.85rem);
+      line-height: 1.12;
+      color: #16241b;
+      white-space: nowrap;
+    }
+
+    .cta-sub {
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: clamp(0.58rem, 2.4vw, 0.66rem);
+      color: rgba(22, 36, 27, 0.72);
+      white-space: nowrap;
+    }
+
+    /* Smaller variant used inside the section 4 slots. */
+    .cta-button.cta-sm {
+      padding: 13px 26px;
+      gap: 4px;
+    }
+    .cta-button.cta-sm .cta-main {
+      font-size: clamp(1.15rem, 5vw, 1.5rem);
+    }
+    .cta-button.cta-sm .cta-sub {
+      font-size: clamp(0.5rem, 2.1vw, 0.56rem);
+    }
+
+    /* ============ CENTERED LISTS (benefits + pillars) ============ */
+    .list-line {
+      padding: 14px 0;
+      border-top: 1px solid var(--hairline);
+      font-family: "Roboto Slab", serif;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.6;
+      text-align: center;
+    }
+    .list-line:first-child {
+      border-top: 0;
+    }
+
+    .list-line .num {
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--sage);
+      margin-right: 10px;
+    }
+
+    .list-line .tick {
+      color: var(--sage);
+      font-weight: 700;
+      margin-right: 10px;
+    }
+
+    /* ============ FADE UP ON SCROLL ============ */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      will-change: opacity, transform;
+    }
+    .fade-up.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      .fade-up {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .cta-button {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ATMOSPHERE LAYERS -->
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <div class="page">
+    <!-- ============================================================= -->
+    <!-- HERO -->
+    <!-- Spacing rhythm:                                                 -->
+    <!--   Eyebrow cluster gap = 24px (pt-6 top, mt-6 to headline,        -->
+    <!--   mt-6 to subheadline).                                          -->
+    <!--   Main rhythm gap = 40px (mt-10) for subheadline->video,         -->
+    <!--   video->button, and button->next-section heading.              -->
+    <!-- ============================================================= -->
+    <header class="pt-6 pb-0">
+      <div class="container-narrow">
+        <p class="eyebrow fade-up">For Michael Pedace</p>
+
+        <h1 class="heading fade-up mt-6" style="font-size: clamp(22px, 4vw, 38px);">
+          You Would Cook Running<br />
+          Paid Ads To A Webinar Funnel<br />
+          &amp; I've Already Built Everything Out<br />
+          So We Can Get Started Right Away
+        </h1>
+
+        <p class="body-copy fade-up mt-6" style="color: var(--muted); font-size: clamp(0.82rem, 3vw, 0.95rem);">
+          (you won't have to change anything about your current strategy or shift your focus whatsoever)
+        </p>
+
+        <!-- LOOM VIDEO FRAME -->
+        <div class="video-frame fade-up mt-10">
+          <!-- =========================================================== -->
+          <!-- LOOM EMBED SLOT: replace the placeholder below with the      -->
+          <!-- iframe. Uncomment and set src to [LOOM_EMBED_URL].           -->
+          <!--                                                              -->
+          <!-- <iframe                                                      -->
+          <!--   src="[LOOM_EMBED_URL]"                                     -->
+          <!--   title="Walkthrough for Michael Pedace"                     -->
+          <!--   allowfullscreen                                            -->
+          <!--   allow="autoplay; fullscreen; picture-in-picture">          -->
+          <!-- </iframe>                                                    -->
+          <!-- =========================================================== -->
+
+          <!-- Placeholder play button + duration badge (remove once iframe is added) -->
+          <div class="play-button" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+          </div>
+          <span class="duration-badge">Walkthrough</span>
+        </div>
+
+        <!-- CALL TO ACTION -->
+        <div class="fade-up mt-10">
+          <!-- CTA: anchor links to [CALENDAR_URL] -->
+          <a href="https://calendly.com/leo-carbon-consulting/discovery-call" class="cta-button">
+            <span class="cta-main">I'll Hear You Out</span>
+            <span class="cta-sub">Click Here To Schedule A Discovery Call…</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================= -->
+    <!-- SECTION TWO -->
+    <!-- ============================================================= -->
+    <section class="pt-10 pb-0">
+      <div class="container-narrow">
+        <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
+          My Understanding Of <em>Stay Viral</em>:
+        </h2>
+
+        <div class="text-slot fade-up mt-10">
+          <div class="body-copy">
+            <p>Stay Viral is essentially an agency and coaching program hybrid.</p>
+            <p>You train and place UGC creators with brands that they can affiliate for.</p>
+            <p>You provide these brands with solid UGC creators who can affiliate for them.</p>
+            <p>Most of your UGC creators find you through organic content and referrals because paid advertising isn't being put to use.</p>
+            <p>They all land on one website that has various portals depending on their role.</p>
+            <p>Beginners get taken to a VSL funnel for a low-ticket offer that feeds into the high-ticket offer.</p>
+            <p>Intermediates get taken to a VSL funnel for a high-ticket offer where they get trained and placed.</p>
+            <p>Anyone just wanting access to brands gets taken to your mobile app.</p>
+            <p>Brands get taken to a typical call funnel in order to learn more.</p>
+            <p>You clearly have a real team, so this is being ran like a proper business, rather than just an offer.</p>
+            <p>It seems like you're really pushing to take over the entire TikTok Shop space.</p>
+          </div>
+        </div>
+
+        <!-- CALL TO ACTION -->
+        <div class="fade-up mt-10">
+          <a href="https://calendly.com/leo-carbon-consulting/discovery-call" class="cta-button">
+            <span class="cta-main">I'll Hear You Out</span>
+            <span class="cta-sub">Click Here To Schedule A Discovery Call…</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SECTION THREE -->
+    <!-- ============================================================= -->
+    <section class="pt-10 pb-0">
+      <div class="container-narrow">
+        <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
+          Why Paid Ads To A Webinar Funnel?
+        </h2>
+
+        <div class="text-slot fade-up mt-10">
+          <div class="body-copy">
+            <p>You want more UGC creators coming to you to be trained and placed with brands.</p>
+            <p>You want more brands coming to you to be paired with UGC creators.</p>
+            <p>Organic content and referrals are already helping you achieve this fairly well.</p>
+            <p>Paid advertising is just how almost every other business on the planet grows in the long run.</p>
+            <p>You're not making use of them yet because your current systems for conversion wouldn't hold up.</p>
+            <p>They're built for warm traffic instead of cold traffic and strangers need a lot more familiarity in order to make a buying decision.</p>
+            <p>A webinar funnel solves that by speedrunning the leads through every stage of awareness, so that they are ready to go by the time you pitch them.</p>
+            <p>You have a great camera presence, so you would make the perfect presenter.</p>
+            <p>You can set the pace in terms of the rhythm and pace that we keep this running at.</p>
+            <p>The hardest parts have already been done anyway.</p>
+          </div>
+        </div>
+
+        <!-- CALL TO ACTION -->
+        <div class="fade-up mt-10">
+          <a href="https://calendly.com/leo-carbon-consulting/discovery-call" class="cta-button">
+            <span class="cta-main">I'll Hear You Out</span>
+            <span class="cta-sub">Click Here To Schedule A Discovery Call…</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- SECTION FOUR (the sample deliverables) -->
+    <!-- Each slot: title -> showcase -> button, all 28px apart, and the  -->
+    <!-- 28px card padding makes top->title and button->bottom match too. -->
+    <!-- ============================================================= -->
+    <section class="pt-10 pb-2">
+      <div class="container-narrow">
+        <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
+          Here Are The Sample Deliverables:
+        </h2>
+
+        <!-- HORIZONTAL SLIDER: each deliverable is a slide; the button opens -->
+        <!-- the asset in Google Drive rather than embedding it inline. -->
+        <div class="deliverables-slider mt-10 fade-up">
+
+          <!-- SLOT 1 -->
+          <article class="block-card">
+            <h3 class="heading" style="font-size: clamp(20px, 3vw, 26px);">Ad Creatives</h3>
+
+            <!-- IN-SLOT BUTTON: opens [DRIVE_AD_CREATIVES_URL] -->
+            <div class="mt-7">
+              <a href="https://docs.google.com/document/d/1AIVgezL7B8yR7Pj1ItDk6PximobT9rSwlxz_Qh15kcc/edit?usp=sharing" class="cta-button cta-sm">
+                <span class="cta-main">Get A Closer View</span>
+                <span class="cta-sub">Click here to open it up in Google Drive.</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- SLOT 2 -->
+          <article class="block-card">
+            <h3 class="heading" style="font-size: clamp(20px, 3vw, 26px);">Landing Pages</h3>
+
+            <!-- IN-SLOT BUTTON: opens [DRIVE_LANDING_PAGES_URL] -->
+            <div class="mt-7">
+              <a href="https://drive.google.com/drive/folders/1dgjwlHPk18vDwnRme9CHEAbZDxjHoxEV?usp=sharing" class="cta-button cta-sm">
+                <span class="cta-main">Get A Closer View</span>
+                <span class="cta-sub">Click here to open it up in Google Drive.</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- SLOT 3 -->
+          <article class="block-card">
+            <h3 class="heading" style="font-size: clamp(20px, 3vw, 26px);">Slideshow</h3>
+
+            <!-- IN-SLOT BUTTON: opens [DRIVE_SLIDESHOW_URL] -->
+            <div class="mt-7">
+              <a href="https://drive.google.com/file/d/1TsG1tVrpNmefNkIqzxWEJHE2Tiq4AgKY/view?usp=sharing" class="cta-button cta-sm">
+                <span class="cta-main">Get A Closer View</span>
+                <span class="cta-sub">Click here to open it up in Google Drive.</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- SLOT 4 -->
+          <article class="block-card">
+            <h3 class="heading" style="font-size: clamp(20px, 3vw, 26px);">Sequences</h3>
+
+            <!-- IN-SLOT BUTTON: opens [DRIVE_SEQUENCES_URL] -->
+            <div class="mt-7">
+              <a href="https://docs.google.com/document/d/1nM_aA1Mimw4VfrY8M7Y_BGxokdncRu7wcorFrqR_0Rw/edit?usp=sharing" class="cta-button cta-sm">
+                <span class="cta-main">Get A Closer View</span>
+                <span class="cta-sub">Click here to open it up in Google Drive.</span>
+              </a>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Swipe affordance -->
+        <p class="slider-hint fade-up mt-4">Swipe to browse &rarr;</p>
+
+        <!-- FINAL CALL TO ACTION (last thing on the page) -->
+        <div class="fade-up mt-8">
+          <a href="https://calendly.com/leo-carbon-consulting/discovery-call" class="cta-button">
+            <span class="cta-main">I'll Hear You Out</span>
+            <span class="cta-sub">Click Here To Schedule A Discovery Call…</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Fade-up on scroll via IntersectionObserver.
+    (function () {
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var items = document.querySelectorAll(".fade-up");
+
+      if (reduce || !("IntersectionObserver" in window)) {
+        items.forEach(function (el) {
+          el.classList.add("is-visible");
+        });
+        return;
+      }
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      );
+
+      items.forEach(function (el) {
+        observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
