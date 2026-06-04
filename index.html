@@ -51,6 +51,12 @@
 
     html {
       scroll-behavior: smooth;
+      /* Stop iOS Safari / Android Chrome from auto-inflating ("boosting")    */
+      /* body text on real devices, which throws the scaled layout out of     */
+      /* proportion even though desktop devtools emulation looks correct.     */
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     body {
