@@ -142,6 +142,16 @@
       width: 177.7778%;
     }
 
+    /* On laptops and desktops, double the diagonal size of every element.    */
+    /* Doubling the diagonal means doubling the linear scale: 0.5625 -> 1.125. */
+    /* width = 1 / 1.125 = 88.8889% so it still fills the viewport exactly.    */
+    @media (min-width: 1024px) {
+      .page {
+        transform: scale(1.125);
+        width: 88.8889%;
+      }
+    }
+
     /* ============ CONTAINER ============ */
     .container-narrow {
       max-width: 880px;
