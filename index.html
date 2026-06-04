@@ -115,6 +115,17 @@
       );
     }
 
+    /* Clipping wrapper for the scaled page. transform: scale() leaves the    */
+    /* element's full unscaled height in layout, which otherwise adds a large */
+    /* empty gap below the content. This wrapper is given an explicit height  */
+    /* (the page's visual height) in JS and clips the leftover, so the page   */
+    /* ends exactly at the content on every browser.                          */
+    .page-clip {
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+    }
+
     /* Keep real content above the overlays */
     .page {
       position: relative;
@@ -497,6 +508,7 @@
   <div class="grid-overlay" aria-hidden="true"></div>
   <div class="grain-overlay" aria-hidden="true"></div>
 
+  <div class="page-clip">
   <div class="page">
     <!-- ============================================================= -->
     <!-- HERO -->
@@ -681,6 +693,7 @@
     </section>
 
   </div>
+  </div>
 
   <script>
     // Fade-up on scroll via IntersectionObserver.
@@ -716,22 +729,23 @@
     // SCALE HEIGHT COMPENSATION
     // .page is shrunk with transform: scale(0.5625). A transform does not
     // change the element's layout box, so without help the document keeps
-    // its full unscaled height and leaves empty space below the content.
-    // We pull that slack back with a negative margin-bottom equal to the
-    // height the scale visually removed, so the page ends at the content.
+    // its full unscaled height and leaves a large empty gap below the
+    // content. We size the .page-clip wrapper to the page's visual height
+    // and let its overflow:hidden clip the leftover, so the document ends
+    // exactly where the visible content does.
     // ===========================================================
     (function () {
-      var SCALE = 0.5625;
       var page = document.querySelector(".page");
-      if (!page) return;
+      var clip = document.querySelector(".page-clip");
+      if (!page || !clip) return;
 
       function fit() {
-        page.style.marginBottom = "0px";
-        // offsetHeight is the pre-transform (layout) height. The scale removes
-        // (1 - SCALE) of that height visually, so we pull the same amount off
-        // the bottom with a negative margin to collapse the leftover space.
-        var layoutHeight = page.offsetHeight;
-        page.style.marginBottom = -(layoutHeight * (1 - SCALE)) + "px";
+        // getBoundingClientRect() returns the post-transform (visual) height,
+        // consistently across engines. Set the clipping wrapper to exactly
+        // that height so the document ends where the visible content does and
+        // the leftover unscaled layout height is clipped away.
+        var visualHeight = page.getBoundingClientRect().height;
+        clip.style.height = visualHeight + "px";
       }
 
       // Run on the next frame so layout is settled, and re-run on every event
