@@ -150,6 +150,11 @@
         transform: scale(1.125);
         width: 88.8889%;
       }
+      /* The hero headline is bumped 15% on mobile via its inline font-size.   */
+      /* Reset it to the original size here so desktop is unchanged.           */
+      h1.heading {
+        font-size: clamp(28.522px, 5.186vw, 49.265px) !important;
+      }
     }
 
     /* ============ CONTAINER ============ */
@@ -531,10 +536,10 @@
       <div class="container-narrow">
         <p class="eyebrow fade-up">For Michael Pedace</p>
 
-        <h1 class="heading fade-up mt-6" style="font-size: clamp(28.522px, 5.186vw, 49.265px);">
+        <h1 class="heading fade-up mt-6" style="font-size: clamp(32.8px, 5.964vw, 56.655px);">
           I've Spent The Last Five Days<br />
-          Working On Something That Will<br />
-          Allow You To Start Selling<br />
+          Working On Something That<br />
+          Allows You To Begin Selling<br />
           Your Offer One To Many
         </h1>
 
