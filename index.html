@@ -156,7 +156,7 @@
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--sage);
-      font-size: 0.88rem;
+      font-size: 1.012rem;
     }
 
     .heading {
@@ -429,7 +429,7 @@
       font-size: clamp(1.15rem, 5vw, 1.5rem);
     }
     .cta-button.cta-sm .cta-sub {
-      font-size: clamp(0.345rem, 1.45vw, 0.387rem);
+      font-size: clamp(0.371rem, 1.559vw, 0.416rem);
       color: rgba(22, 36, 27, 0.88);
       white-space: normal;
       text-align: center;
@@ -510,14 +510,14 @@
       <div class="container-narrow">
         <p class="eyebrow fade-up">For Michael Pedace</p>
 
-        <h1 class="heading fade-up mt-6" style="font-size: clamp(27.5px, 5vw, 47.5px);">
+        <h1 class="heading fade-up mt-6" style="font-size: clamp(31.625px, 5.75vw, 54.625px);">
           You Would Cook Running<br />
           Paid Ads To A Webinar Funnel<br />
           &amp; I've Already Built Everything Out<br />
           So We Can Get Started Right Away
         </h1>
 
-        <p class="body-copy fade-up mt-6" style="color: var(--muted); font-size: clamp(0.661rem, 2.419vw, 0.766rem);">
+        <p class="body-copy fade-up mt-6" style="color: var(--muted); font-size: clamp(0.76rem, 2.782vw, 0.881rem);">
           (you won't have to change anything about your current strategy or shift your focus whatsoever)
         </p>
 
@@ -560,7 +560,7 @@
     <!-- ============================================================= -->
     <section class="pt-10 pb-0">
       <div class="container-narrow">
-        <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
+        <h2 class="heading fade-up" style="font-size: clamp(29.9px, 4.6vw, 41.4px);">
           Here Are The Sample Deliverables:
         </h2>
 
@@ -632,7 +632,7 @@
     <!-- ============================================================= -->
     <section class="pt-10 pb-0">
       <div class="container-narrow">
-        <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
+        <h2 class="heading fade-up" style="font-size: clamp(29.9px, 4.6vw, 41.4px);">
           My Understanding Of <em>Stay Viral</em>:
         </h2>
 
@@ -659,7 +659,7 @@
     <!-- ============================================================= -->
     <section class="pt-10 pb-10">
       <div class="container-narrow">
-        <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
+        <h2 class="heading fade-up" style="font-size: clamp(29.9px, 4.6vw, 41.4px);">
           Why Paid Ads To A Webinar Funnel?
         </h2>
 
@@ -727,19 +727,37 @@
 
       function fit() {
         page.style.marginBottom = "0px";
-        // offsetHeight is the pre-transform (layout) height.
+        // offsetHeight is the pre-transform (layout) height. The scale removes
+        // (1 - SCALE) of that height visually, so we pull the same amount off
+        // the bottom with a negative margin to collapse the leftover space.
         var layoutHeight = page.offsetHeight;
         page.style.marginBottom = -(layoutHeight * (1 - SCALE)) + "px";
       }
 
-      fit();
-      window.addEventListener("load", fit);
-      window.addEventListener("resize", fit);
-      window.addEventListener("orientationchange", fit);
+      // Run on the next frame so layout is settled, and re-run on every event
+      // that can change the content height (font swap, image load, resize).
+      function fitSoon() {
+        if (window.requestAnimationFrame) {
+          window.requestAnimationFrame(fit);
+        } else {
+          fit();
+        }
+      }
 
-      // Re-fit if the content box changes (e.g. late font load reflow).
+      fitSoon();
+      document.addEventListener("DOMContentLoaded", fitSoon);
+      window.addEventListener("load", fitSoon);
+      window.addEventListener("resize", fitSoon);
+      window.addEventListener("orientationchange", fitSoon);
+
+      // Web fonts reflow the page after they load; re-fit once they're ready.
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(fitSoon);
+      }
+
+      // Catch any other late content-box changes.
       if ("ResizeObserver" in window) {
-        new ResizeObserver(fit).observe(page);
+        new ResizeObserver(fitSoon).observe(page);
       }
     })();
   </script>
