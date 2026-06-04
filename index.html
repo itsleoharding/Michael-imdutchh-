@@ -119,11 +119,17 @@
     .page {
       position: relative;
       z-index: 2;
-      /* Uniformly scale every element so nothing gets stretched or oddly     */
-      /* indented on mobile. Applied to the content wrapper only, so the fixed */
-      /* atmosphere overlays still cover the page. 0.75 x 0.75 = 0.5625 so the */
-      /* content sits at 75% of the previous 75% scale.                       */
-      zoom: 0.5625;
+      /* Uniformly scale every element to 0.5625 (75% of 75%) so the design   */
+      /* sits at the same small size on every device. We use transform:scale  */
+      /* rather than `zoom` because `zoom` is non-standard and several mobile  */
+      /* engines (iOS Safari, in-app webviews) fail to scale vw-based clamp()  */
+      /* text under it, which left the text oversized on real phones.          */
+      /* transform scales the painted result uniformly, so it is consistent.  */
+      /* width = 1 / 0.5625 = 177.7778% so that after scaling it fills the     */
+      /* viewport exactly; origin top-left anchors it to the corner.           */
+      transform: scale(0.5625);
+      transform-origin: top left;
+      width: 177.7778%;
     }
 
     /* ============ CONTAINER ============ */
@@ -704,6 +710,37 @@
       items.forEach(function (el) {
         observer.observe(el);
       });
+    })();
+
+    // ===========================================================
+    // SCALE HEIGHT COMPENSATION
+    // .page is shrunk with transform: scale(0.5625). A transform does not
+    // change the element's layout box, so without help the document keeps
+    // its full unscaled height and leaves empty space below the content.
+    // We pull that slack back with a negative margin-bottom equal to the
+    // height the scale visually removed, so the page ends at the content.
+    // ===========================================================
+    (function () {
+      var SCALE = 0.5625;
+      var page = document.querySelector(".page");
+      if (!page) return;
+
+      function fit() {
+        page.style.marginBottom = "0px";
+        // offsetHeight is the pre-transform (layout) height.
+        var layoutHeight = page.offsetHeight;
+        page.style.marginBottom = -(layoutHeight * (1 - SCALE)) + "px";
+      }
+
+      fit();
+      window.addEventListener("load", fit);
+      window.addEventListener("resize", fit);
+      window.addEventListener("orientationchange", fit);
+
+      // Re-fit if the content box changes (e.g. late font load reflow).
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(fit).observe(page);
+      }
     })();
   </script>
 </body>
