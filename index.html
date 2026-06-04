@@ -150,8 +150,11 @@
         transform: scale(1.125);
         width: 88.8889%;
       }
-      /* Hero headline and subheadline are +15% (over base) on mobile via      */
-      /* their inline font-size. On desktop they are +5% over base instead.    */
+      /* Hero eyebrow, headline, and subheadline are +15% (over base) on       */
+      /* mobile via their base font-size. On desktop they are +5% over base.   */
+      header .eyebrow {
+        font-size: 1.0626rem;
+      }
       h1.heading {
         font-size: clamp(29.948px, 5.445vw, 51.728px) !important;
       }
@@ -184,7 +187,8 @@
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--sage);
-      font-size: 1.012rem;
+      /* +15% over base (0.88rem) on mobile; desktop is reset to +5% below.    */
+      font-size: 1.1638rem;
     }
 
     .heading {
