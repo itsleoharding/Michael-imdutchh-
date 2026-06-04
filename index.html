@@ -113,10 +113,11 @@
     .page {
       position: relative;
       z-index: 2;
-      /* Uniformly scale every element to 75% of its natural size so nothing  */
-      /* gets stretched or oddly indented on mobile. Applied to the content   */
-      /* wrapper only, so the fixed atmosphere overlays still cover the page.  */
-      zoom: 0.75;
+      /* Uniformly scale every element so nothing gets stretched or oddly     */
+      /* indented on mobile. Applied to the content wrapper only, so the fixed */
+      /* atmosphere overlays still cover the page. 0.75 x 0.75 = 0.5625 so the */
+      /* content sits at 75% of the previous 75% scale.                       */
+      zoom: 0.5625;
     }
 
     /* ============ CONTAINER ============ */
@@ -172,7 +173,9 @@
     /* ============ VIDEO FRAME ============ */
     .video-frame {
       position: relative;
-      width: 100%;
+      width: 92.5%;
+      margin-left: auto;
+      margin-right: auto;
       aspect-ratio: 16 / 9;
       border-radius: 16px;
       overflow: hidden;
@@ -263,6 +266,9 @@
       padding: 28px;
       box-shadow: 0 18px 50px -38px rgba(0, 0, 0, 0.85);
       text-align: center;
+      width: 92.5%;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     @media (min-width: 640px) {
@@ -338,7 +344,7 @@
 
     .deliverables-slider .block-card {
       flex: 0 0 auto;
-      width: min(82vw, 340px);
+      width: min(75.85vw, 314.5px);
       scroll-snap-align: center;
     }
 
@@ -399,15 +405,22 @@
     }
 
     /* Smaller variant used inside the section 4 slots. */
+    /* Fill the card width (rather than fit-content) and let the longer sub-  */
+    /* line wrap, so the button never spans outside its slot.                 */
     .cta-button.cta-sm {
       padding: 13px 26px;
       gap: 4px;
+      width: 100%;
+      max-width: 100%;
     }
     .cta-button.cta-sm .cta-main {
       font-size: clamp(1.15rem, 5vw, 1.5rem);
     }
     .cta-button.cta-sm .cta-sub {
-      font-size: clamp(0.5rem, 2.1vw, 0.56rem);
+      font-size: clamp(0.345rem, 1.45vw, 0.387rem);
+      color: rgba(22, 36, 27, 0.88);
+      white-space: normal;
+      text-align: center;
     }
 
     /* ============ CENTERED LISTS (benefits + pillars) ============ */
@@ -485,14 +498,14 @@
       <div class="container-narrow">
         <p class="eyebrow fade-up">For Michael Pedace</p>
 
-        <h1 class="heading fade-up mt-6" style="font-size: clamp(22px, 4vw, 38px);">
+        <h1 class="heading fade-up mt-6" style="font-size: clamp(27.5px, 5vw, 47.5px);">
           You Would Cook Running<br />
           Paid Ads To A Webinar Funnel<br />
           &amp; I've Already Built Everything Out<br />
           So We Can Get Started Right Away
         </h1>
 
-        <p class="body-copy fade-up mt-6" style="color: var(--muted); font-size: clamp(0.82rem, 3vw, 0.95rem);">
+        <p class="body-copy fade-up mt-6" style="color: var(--muted); font-size: clamp(0.661rem, 2.419vw, 0.766rem);">
           (you won't have to change anything about your current strategy or shift your focus whatsoever)
         </p>
 
@@ -529,80 +542,11 @@
     </header>
 
     <!-- ============================================================= -->
-    <!-- SECTION TWO -->
-    <!-- ============================================================= -->
-    <section class="pt-10 pb-0">
-      <div class="container-narrow">
-        <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
-          My Understanding Of <em>Stay Viral</em>:
-        </h2>
-
-        <div class="text-slot fade-up mt-10">
-          <div class="body-copy">
-            <p>Stay Viral is essentially an agency and coaching program hybrid.</p>
-            <p>You train and place UGC creators with brands that they can affiliate for.</p>
-            <p>You provide these brands with solid UGC creators who can affiliate for them.</p>
-            <p>Most of your UGC creators find you through organic content and referrals because paid advertising isn't being put to use.</p>
-            <p>They all land on one website that has various portals depending on their role.</p>
-            <p>Beginners get taken to a VSL funnel for a low-ticket offer that feeds into the high-ticket offer.</p>
-            <p>Intermediates get taken to a VSL funnel for a high-ticket offer where they get trained and placed.</p>
-            <p>Anyone just wanting access to brands gets taken to your mobile app.</p>
-            <p>Brands get taken to a typical call funnel in order to learn more.</p>
-            <p>You clearly have a real team, so this is being ran like a proper business, rather than just an offer.</p>
-            <p>It seems like you're really pushing to take over the entire TikTok Shop space.</p>
-          </div>
-        </div>
-
-        <!-- CALL TO ACTION -->
-        <div class="fade-up mt-10">
-          <a href="https://calendly.com/leo-carbon-consulting/discovery-call" class="cta-button">
-            <span class="cta-main">I'll Hear You Out</span>
-            <span class="cta-sub">Click Here To Schedule A Discovery Call…</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================= -->
-    <!-- SECTION THREE -->
-    <!-- ============================================================= -->
-    <section class="pt-10 pb-0">
-      <div class="container-narrow">
-        <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
-          Why Paid Ads To A Webinar Funnel?
-        </h2>
-
-        <div class="text-slot fade-up mt-10">
-          <div class="body-copy">
-            <p>You want more UGC creators coming to you to be trained and placed with brands.</p>
-            <p>You want more brands coming to you to be paired with UGC creators.</p>
-            <p>Organic content and referrals are already helping you achieve this fairly well.</p>
-            <p>Paid advertising is just how almost every other business on the planet grows in the long run.</p>
-            <p>You're not making use of them yet because your current systems for conversion wouldn't hold up.</p>
-            <p>They're built for warm traffic instead of cold traffic and strangers need a lot more familiarity in order to make a buying decision.</p>
-            <p>A webinar funnel solves that by speedrunning the leads through every stage of awareness, so that they are ready to go by the time you pitch them.</p>
-            <p>You have a great camera presence, so you would make the perfect presenter.</p>
-            <p>You can set the pace in terms of the rhythm and pace that we keep this running at.</p>
-            <p>The hardest parts have already been done anyway.</p>
-          </div>
-        </div>
-
-        <!-- CALL TO ACTION -->
-        <div class="fade-up mt-10">
-          <a href="https://calendly.com/leo-carbon-consulting/discovery-call" class="cta-button">
-            <span class="cta-main">I'll Hear You Out</span>
-            <span class="cta-sub">Click Here To Schedule A Discovery Call…</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================= -->
-    <!-- SECTION FOUR (the sample deliverables) -->
+    <!-- SAMPLE DELIVERABLES (moved directly below the hero for prominence) -->
     <!-- Each slot: title -> showcase -> button, all 28px apart, and the  -->
     <!-- 28px card padding makes top->title and button->bottom match too. -->
     <!-- ============================================================= -->
-    <section class="pt-10 pb-2">
+    <section class="pt-10 pb-0">
       <div class="container-narrow">
         <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
           Here Are The Sample Deliverables:
@@ -668,16 +612,62 @@
 
         <!-- Swipe affordance -->
         <p class="slider-hint fade-up mt-4">Swipe to browse &rarr;</p>
+      </div>
+    </section>
 
-        <!-- FINAL CALL TO ACTION (last thing on the page) -->
-        <div class="fade-up mt-8">
-          <a href="https://calendly.com/leo-carbon-consulting/discovery-call" class="cta-button">
-            <span class="cta-main">I'll Hear You Out</span>
-            <span class="cta-sub">Click Here To Schedule A Discovery Call…</span>
-          </a>
+    <!-- ============================================================= -->
+    <!-- SECTION TWO -->
+    <!-- ============================================================= -->
+    <section class="pt-10 pb-0">
+      <div class="container-narrow">
+        <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
+          My Understanding Of <em>Stay Viral</em>:
+        </h2>
+
+        <div class="text-slot fade-up mt-10">
+          <div class="body-copy">
+            <p>Stay Viral is essentially an agency and coaching program hybrid.</p>
+            <p>You train and place UGC creators with brands that they can affiliate for.</p>
+            <p>You provide these brands with solid UGC creators who can affiliate for them.</p>
+            <p>Most of your UGC creators find you through organic content and referrals because paid advertising isn't being put to use.</p>
+            <p>They all land on one website that has various portals depending on their role.</p>
+            <p>Beginners get taken to a VSL funnel for a low-ticket offer that feeds into the high-ticket offer.</p>
+            <p>Intermediates get taken to a VSL funnel for a high-ticket offer where they get trained and placed.</p>
+            <p>Anyone just wanting access to brands gets taken to your mobile app.</p>
+            <p>Brands get taken to a typical call funnel in order to learn more.</p>
+            <p>You clearly have a real team, so this is being ran like a proper business, rather than just an offer.</p>
+            <p>It seems like you're really pushing to take over the entire TikTok Shop space.</p>
+          </div>
         </div>
       </div>
     </section>
+
+    <!-- ============================================================= -->
+    <!-- SECTION THREE -->
+    <!-- ============================================================= -->
+    <section class="pt-10 pb-10">
+      <div class="container-narrow">
+        <h2 class="heading fade-up" style="font-size: clamp(26px, 4vw, 36px);">
+          Why Paid Ads To A Webinar Funnel?
+        </h2>
+
+        <div class="text-slot fade-up mt-10">
+          <div class="body-copy">
+            <p>You want more UGC creators coming to you to be trained and placed with brands.</p>
+            <p>You want more brands coming to you to be paired with UGC creators.</p>
+            <p>Organic content and referrals are already helping you achieve this fairly well.</p>
+            <p>Paid advertising is just how almost every other business on the planet grows in the long run.</p>
+            <p>You're not making use of them yet because your current systems for conversion wouldn't hold up.</p>
+            <p>They're built for warm traffic instead of cold traffic and strangers need a lot more familiarity in order to make a buying decision.</p>
+            <p>A webinar funnel solves that by speedrunning the leads through every stage of awareness, so that they are ready to go by the time you pitch them.</p>
+            <p>You have a great camera presence, so you would make the perfect presenter.</p>
+            <p>You can set the pace in terms of the rhythm and pace that we keep this running at.</p>
+            <p>The hardest parts have already been done anyway.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <script>
