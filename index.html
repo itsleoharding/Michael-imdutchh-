@@ -150,10 +150,13 @@
         transform: scale(1.125);
         width: 88.8889%;
       }
-      /* The hero headline is bumped 15% on mobile via its inline font-size.   */
-      /* Reset it to the original size here so desktop is unchanged.           */
+      /* Hero headline and subheadline are +15% (over base) on mobile via      */
+      /* their inline font-size. On desktop they are +5% over base instead.    */
       h1.heading {
-        font-size: clamp(28.522px, 5.186vw, 49.265px) !important;
+        font-size: clamp(29.948px, 5.445vw, 51.728px) !important;
+      }
+      header .body-copy {
+        font-size: clamp(0.798rem, 2.921vw, 0.925rem) !important;
       }
     }
 
@@ -543,8 +546,8 @@
           Your Offer One To Many
         </h1>
 
-        <p class="body-copy fade-up mt-6" style="color: var(--muted); font-size: clamp(0.76rem, 2.782vw, 0.881rem);">
-          (you won't have to change anything about your current strategy or shift your focus whatsoever)
+        <p class="body-copy fade-up mt-6" style="color: var(--muted); font-size: clamp(0.874rem, 3.199vw, 1.013rem);">
+          (the video right below will explain everything)
         </p>
 
         <!-- LOOM VIDEO FRAME -->
